@@ -31,17 +31,24 @@ export default {
           quotes = quotes.filter(quote => quote.Currency === state.filter.currency)
         }
 
-        if (state.filter.years) {
+        if (state.filter.years.length) {
           quotes = quotes.filter(quote => state.filter.years.includes(quote.Years))
         }
 
         return { ...item, Quote: quotes }
       })
-    }
+    },
+    sortFilterYears: (state) => state.filter.years.sort((a, b) => a - b)
   },
   mutations: {
     SET_ITEMS (state, items) {
       state.items = items
+    },
+    SET_AVAILABLE (state, { type, value }) {
+      state.available[type] = value
+    },
+    SET_FILTER (state, { type, value }) {
+      state.filter[type] = value
     }
   },
   actions: {

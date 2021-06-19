@@ -3,7 +3,7 @@
   <tr>
     <th colspan="3" class="border-0"></th>
     <th
-      v-for="year in filter.years"
+      v-for="year in sortFilterYears"
       :key="year"
       class="text-center"
       colspan="2"
@@ -15,21 +15,21 @@
     <th class="fw-normal text-black-50"></th>
     <th class="fw-normal text-black-50">DATE SENT</th>
     <th class="fw-normal text-black-50">COMPANY</th>
-    <template v-for="year in filter.years">
-      <th :key="`${year}FIX`" class="fw-normal text-black-50 text-center">FIX</th>
-      <th :key="`${year}FRN`" class="fw-normal text-black-50 text-center">FRN</th>
+    <template v-for="year in sortFilterYears">
+      <th :key="`${year}-fix`" class="fw-normal text-black-50 text-center">FIX</th>
+      <th :key="`${year}-frn`" class="fw-normal text-black-50 text-center">FRN</th>
     </template>
   </tr>
   </thead>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'BondsTableHead',
   computed: {
-    ...mapState('bonds', ['filter'])
+    ...mapGetters('bonds', ['sortFilterYears'])
   }
 }
 </script>
