@@ -10,18 +10,16 @@ Vue.filter('date', (value) => {
   return dayjs(value).format('DD-MMM-YY')
 })
 
-Vue.filter('spread', (value) => {
+Vue.filter('formatCharacteristic', (value, type) => {
   if (!value) {
     return
   }
 
-  return value > 0 ? `+${value}bp` : `${value}bp`
-})
-
-Vue.filter('yield', (value) => {
-  if (!value) {
-    return
+  if (type === 'Spread' || type === '3MLSpread') {
+    return value > 0 ? `+${value}bp` : `${value}bp`
   }
 
-  return `${value.toFixed(3)}%`
+  if (type === 'Yield') {
+    return `${value.toFixed(3)}%`
+  }
 })

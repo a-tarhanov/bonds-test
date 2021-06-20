@@ -25,6 +25,15 @@ export default {
           .sort((a, b) => a - b)
       )
     ],
+    availableTypes: (state, getters) => (year) => [
+      ...new Set(
+        getters.allQuotes
+          .filter(item => item.Currency === state.filter.currency)
+          .filter(item => item.Years === year)
+          .map(item => item.CouponType)
+          .sort()
+      )
+    ],
     filteredItems: (state) => {
       let items = state.items || []
 

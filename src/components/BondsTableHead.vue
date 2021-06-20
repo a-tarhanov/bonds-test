@@ -6,7 +6,7 @@
       v-for="year in sortFilterYears"
       :key="year"
       class="text-center"
-      colspan="2"
+      :colspan="availableTypes(year).length"
     >
       {{ year }} YRS
     </th>
@@ -16,8 +16,9 @@
     <th class="fw-normal text-black-50">DATE SENT</th>
     <th class="fw-normal text-black-50">COMPANY</th>
     <template v-for="year in sortFilterYears">
-      <th :key="`${year}-fix`" class="fw-normal text-black-50 text-center">FIX</th>
-      <th :key="`${year}-frn`" class="fw-normal text-black-50 text-center">FRN</th>
+      <th v-for="type in availableTypes(year)" :key="`${year}-${type}`" class="fw-normal text-black-50 text-center">
+        {{ type }}
+      </th>
     </template>
   </tr>
   </thead>
@@ -29,7 +30,7 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'BondsTableHead',
   computed: {
-    ...mapGetters('bonds', ['sortFilterYears'])
+    ...mapGetters('bonds', ['sortFilterYears', 'availableTypes'])
   }
 }
 </script>

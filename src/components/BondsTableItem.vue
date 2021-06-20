@@ -17,33 +17,28 @@
       </td>
       <td class="fw-bold" :class="{ 'text-muted': !quotes.length }">{{ companyName }}</td>
       <template v-for="year in sortFilterYears">
-        <td :key="`${year}-fix`" class="text-center">{{ getValue(year, 'FIX', 'Spread') | spread }}</td>
-        <td :key="`${year}-frn`" class="text-center">{{ getValue(year, 'FRN', 'Spread') | spread }}</td>
+        <td v-for="type in availableTypes(year)" :key="`${year}-${type}`" class="text-center">
+          {{ getValue(year, type, filter.display) | formatCharacteristic(filter.display) }}
+        </td>
       </template>
     </tr>
-    <tr v-show="quotes.length && active">
-      <td></td>
-      <td></td>
-      <td>Yield</td>
-      <template v-for="year in sortFilterYears">
-        <td :key="`${year}-fix`" class="text-center">{{ getValue(year, 'FIX', 'Yield') | yield }}</td>
-        <td :key="`${year}-frn`" class="text-center">{{ getValue(year, 'FRN', 'Yield') | yield }}</td>
-      </template>
-    </tr>
-    <tr v-show="quotes.length && active">
-      <td></td>
-      <td></td>
-      <td>3MLSpread</td>
-      <template v-for="year in sortFilterYears">
-        <td :key="`${year}-fix`" class="text-center">{{ getValue(year, 'FIX', '3MLSpread') | spread }}</td>
-        <td :key="`${year}-frn`" class="text-center">{{ getValue(year, 'FRN', '3MLSpread') | spread }}</td>
-      </template>
-    </tr>
+    <template v-for="characteristic in otherCharacteristics">
+      <tr v-show="quotes.length && active" :key="characteristic">
+        <td></td>
+        <td></td>
+        <td>{{ characteristic }}</td>
+        <template v-for="year in sortFilterYears">
+          <td v-for="type in availableTypes(year)" :key="`${year}-${type}`" class="text-center">
+            {{ getValue(year, type, characteristic) | formatCharacteristic(characteristic) }}
+          </td>
+        </template>
+      </tr>
+    </template>
   </tbody>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'BondsTableItem',
@@ -57,10 +52,12 @@ export default {
     active: false
   }),
   computed: {
-    ...mapGetters('bonds', ['sortFilterYears']),
+    ...mapState('bonds', ['available', 'filter']),
+    ...mapGetters('bonds', ['sortFilterYears', 'availableTypes']),
     dateSent: vm => vm.item.DateSent || null,
     companyName: vm => vm.item.Company || null,
-    quotes: vm => vm.item.Quote || []
+    quotes: vm => vm.item.Quote || [],
+    otherCharacteristics: vm => vm.available.display.filter(item => item !== vm.filter.display)
   },
   methods: {
     getValue (year, type, display) {
