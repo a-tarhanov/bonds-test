@@ -13,6 +13,10 @@ export default {
       currency: 'USD',
       years: [],
       display: 'Spread'
+    },
+    sort: {
+      column: 'date',
+      order: 'desc'
     }
   },
   getters: {
@@ -35,7 +39,37 @@ export default {
       )
     ],
     filteredItems: (state) => {
-      let items = state.items || []
+      let items = [...state.items]
+
+      items.sort((a, b) => {
+        if (!a.Quote?.length && b.Quote?.length) {
+          return 1
+        }
+
+        let compare = 0
+
+        if (state.sort.column === 'company' && state.sort.order === 'asc') {
+          compare = a.Company.localeCompare(b.Company)
+        }
+
+        if (state.sort.column === 'company' && state.sort.order === 'desc') {
+          compare = b.Company.localeCompare(a.Company)
+        }
+
+        if (state.sort.column === 'date' && state.sort.order === 'asc') {
+          compare = new Date(a.DateSent) - new Date(b.DateSent)
+        }
+
+        if (state.sort.column === 'date' && state.sort.order === 'desc') {
+          compare = new Date(b.DateSent) - new Date(a.DateSent)
+        }
+
+        if (compare === 0) {
+          compare = b.Preferred - a.Preferred
+        }
+
+        return compare
+      })
 
       if (state.filter.company) {
         items = items.filter(item => item.Company.match(new RegExp(state.filter.company, 'i')))
@@ -63,6 +97,10 @@ export default {
     },
     SET_FILTER (state, { type, value }) {
       state.filter[type] = value
+    },
+    SET_SORT (state, { column, order }) {
+      state.sort.column = column
+      state.sort.order = order
     }
   },
   actions: {
