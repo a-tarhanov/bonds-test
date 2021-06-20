@@ -6,17 +6,25 @@ export default {
     items: [],
     available: {
       currencies: ['USD', 'EUR', 'CAD'],
-      years: [5, 10, 40],
       display: ['Spread', 'Yield', '3MLSpread']
     },
     filter: {
       company: null,
       currency: 'USD',
-      years: [5, 10, 40],
+      years: [],
       display: 'Spread'
     }
   },
   getters: {
+    allQuotes: (state) => state.items.map(item => item.Quote).flat().filter(quote => quote),
+    availableYears: (state, getters) => [
+      ...new Set(
+        getters.allQuotes
+          .filter(item => item.Currency === state.filter.currency)
+          .map(item => item.Years)
+          .sort((a, b) => a - b)
+      )
+    ],
     filteredItems: (state) => {
       let items = state.items || []
 
@@ -43,9 +51,6 @@ export default {
   mutations: {
     SET_ITEMS (state, items) {
       state.items = items
-    },
-    SET_AVAILABLE (state, { type, value }) {
-      state.available[type] = value
     },
     SET_FILTER (state, { type, value }) {
       state.filter[type] = value

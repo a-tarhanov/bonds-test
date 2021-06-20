@@ -26,7 +26,7 @@ import { mapState } from 'vuex'
 export default {
   name: 'BondsFilterCurrency',
   computed: {
-    ...mapState('bonds', ['filter', 'available']),
+    ...mapState('bonds', ['filter', 'available'])
   }
 }
 </script>
