@@ -17,7 +17,12 @@
       </td>
       <td class="fw-bold" :class="{ 'text-muted': !quotes.length }">{{ companyName }}</td>
       <template v-for="year in sortFilterYears">
-        <td v-for="type in availableTypes(year)" :key="`${year}-${type}`" class="text-center">
+        <td
+          v-for="type in availableTypes(year)"
+          :key="`${year}-${type}`"
+          class="text-center"
+          :class="{ 'bg-warning': minimumValue(year, type, filter.display) === getValue(year, type, filter.display) }"
+        >
           {{ getValue(year, type, filter.display) | formatCharacteristic(filter.display) }}
         </td>
       </template>
@@ -53,7 +58,7 @@ export default {
   }),
   computed: {
     ...mapState('bonds', ['available', 'filter']),
-    ...mapGetters('bonds', ['sortFilterYears', 'availableTypes']),
+    ...mapGetters('bonds', ['sortFilterYears', 'availableTypes', 'minimumValue']),
     dateSent: vm => vm.item.DateSent || null,
     companyName: vm => vm.item.Company || null,
     quotes: vm => vm.item.Quote || [],

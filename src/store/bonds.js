@@ -89,6 +89,21 @@ export default {
         return { ...item, Quote: quotes }
       })
     },
+    minimumValue: (state, getters) => (year, type, display) => {
+      let min
+
+      getters.filteredItems.forEach(item => {
+        item.Quote
+          .filter(quote => quote.Years === year && quote.CouponType === type)
+          .forEach(quote => {
+            if (quote[display] && (!min || min > quote[display])) {
+              min = quote[display]
+            }
+          })
+      })
+
+      return min
+    },
     sortFilterYears: (state) => state.filter.years.sort((a, b) => a - b)
   },
   mutations: {
