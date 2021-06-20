@@ -108,6 +108,10 @@ export default {
     averageValue: (state, getters) => (year, type, display) => {
       const values = getters.columnValues(year, type, display)
 
+      if (!values.length) {
+        return
+      }
+
       return values.reduce((acc, value) => acc + value) / values.length
     },
     sortFilterYears: (state) => state.filter.years.sort((a, b) => a - b)

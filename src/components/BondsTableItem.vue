@@ -15,7 +15,9 @@
           {{ dateSent | date }}
         </template>
       </td>
-      <td class="fw-bold" :class="{ 'text-muted': !quotes.length }">{{ companyName }}</td>
+      <td class="fw-bold" :class="{ 'text-muted': !quotes.length }">
+        {{ companyName }}
+      </td>
       <template v-for="year in sortFilterYears">
         <td
           v-for="type in availableTypes(year)"

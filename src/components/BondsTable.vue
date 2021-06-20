@@ -1,11 +1,14 @@
 <template>
   <table class="table table-sm">
     <BondsTableHead></BondsTableHead>
-    <BondsTableItem
-      v-for="item in filteredItems"
-      :key="item.Id"
-      :item="item"
-    ></BondsTableItem>
+    <template v-if="filteredItems.length">
+      <BondsTableItem
+        v-for="item in filteredItems"
+        :key="item.Id"
+        :item="item"
+      ></BondsTableItem>
+    </template>
+    <BondsTableEmpty v-else></BondsTableEmpty>
     <BondsTableFoot></BondsTableFoot>
   </table>
 </template>
@@ -15,10 +18,12 @@ import { mapGetters } from 'vuex'
 import BondsTableItem from './BondsTableItem'
 import BondsTableHead from './BondsTableHead'
 import BondsTableFoot from './BondsTableFoot'
+import BondsTableEmpty from './BondsTableEmpty'
 
 export default {
   name: 'BondsTable',
   components: {
+    BondsTableEmpty,
     BondsTableFoot,
     BondsTableHead,
     BondsTableItem

@@ -1,5 +1,5 @@
 <template>
-  <tfoot>
+  <tfoot v-if="filteredItems.length">
   <tr>
     <td colspan="2"></td>
     <td>Average by {{ filter.display }}</td>
@@ -19,7 +19,7 @@ export default {
   name: 'BondsTableFoot',
   computed: {
     ...mapState('bonds', ['filter']),
-    ...mapGetters('bonds', ['sortFilterYears', 'availableTypes', 'averageValue'])
+    ...mapGetters('bonds', ['sortFilterYears', 'availableTypes', 'averageValue', 'filteredItems'])
   }
 }
 </script>
