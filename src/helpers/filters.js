@@ -16,7 +16,7 @@ Vue.filter('formatCharacteristic', (value, type) => {
   }
 
   if (type === 'Spread' || type === '3MLSpread') {
-    return value > 0 ? `+${value}bp` : `${value}bp`
+    return value > 0 ? `+${value.toFixed(0)}bp` : `${value.toFixed(0)}bp`
   }
 
   if (type === 'Yield') {

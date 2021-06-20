@@ -2,13 +2,13 @@
   <tbody>
     <tr>
       <td class="chevron-cell">
-        <div
+        <span
           v-if="quotes.length"
           @click="active = !active"
         >
           <i v-if="active" class="bi bi-chevron-up"></i>
           <i v-else class="bi bi-chevron-down"></i>
-        </div>
+        </span>
       </td>
       <td>
         <template v-if="quotes.length">
@@ -75,15 +75,11 @@ export default {
 </script>
 
 <style scoped>
-tbody > tr > td {
-  border-bottom-color: inherit !important;
-}
-
 .chevron-cell {
   width: 0;
 }
 
-.chevron-cell > div {
+.chevron-cell > span {
   cursor: pointer;
 }
 </style>

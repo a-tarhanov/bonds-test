@@ -89,20 +89,26 @@ export default {
         return { ...item, Quote: quotes }
       })
     },
-    minimumValue: (state, getters) => (year, type, display) => {
-      let min
+    columnValues: (state, getters) => (year, type, display) => {
+      let values = []
 
       getters.filteredItems.forEach(item => {
         item.Quote
           .filter(quote => quote.Years === year && quote.CouponType === type)
           .forEach(quote => {
-            if (quote[display] && (!min || min > quote[display])) {
-              min = quote[display]
+            if (quote[display]) {
+              values.push(quote[display])
             }
           })
       })
 
-      return min
+      return values
+    },
+    minimumValue: (state, getters) => (year, type, display) => Math.min(...getters.columnValues(year, type, display)),
+    averageValue: (state, getters) => (year, type, display) => {
+      const values = getters.columnValues(year, type, display)
+
+      return values.reduce((acc, value) => acc + value) / values.length
     },
     sortFilterYears: (state) => state.filter.years.sort((a, b) => a - b)
   },
